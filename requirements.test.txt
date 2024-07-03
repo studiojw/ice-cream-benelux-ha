@@ -1,0 +1,5 @@
+pytest
+pytest-cov==5.0.0
+pytest-emoji
+pytest-md
+pytest-homeassistant-custom-component
