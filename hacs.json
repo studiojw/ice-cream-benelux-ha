@@ -1,0 +1,5 @@
+{
+    "name": "Ice Cream Benelux",
+    "country": ["BE", "NL", "LU"],
+    "render_readme": true
+}
