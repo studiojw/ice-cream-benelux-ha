@@ -38,13 +38,15 @@ Whether you're in Belgium or the Netherlands, never miss your favorite ice cream
 
 ## How You Can Use It
 
-- **Dashboard**: Keep an eye on your ice cream cravings by adding this sensor to a card on your dashboard.
+- **Map**: See where the ice cream vans are located.
 - **Automation Trigger**: Set up [Automations](https://www.home-assistant.io/docs/automation/) to alert you
   when the ice cream van is within a certain range.
+- **Dashboard**: Keep an eye on your ice cream cravings by adding this sensor to a card on your dashboard.
 
 <p float="left">
-  <img src="https://raw.githubusercontent.com/studiojw/ice-cream-benelux-ha/main/screenshots/dashboard_gauge.png" alt="Gauge Card" width="auto" height="240"/>
+  <img src="screenshots/map.png" alt="Map" width="auto" height="240"/>
   <img src="https://raw.githubusercontent.com/studiojw/ice-cream-benelux-ha/main/screenshots/automation_sound.png" alt="Gauge Card" width="auto" height="240"/>
+  <img src="https://raw.githubusercontent.com/studiojw/ice-cream-benelux-ha/main/screenshots/dashboard_gauge.png" alt="Gauge Card" width="auto" height="140"/>
 </p>
 
 ## Installation
