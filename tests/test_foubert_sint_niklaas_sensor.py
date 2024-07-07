@@ -19,7 +19,7 @@ class MockFoubertSintNiklaasSensor(FoubertSintNiklaasSensor):
         }
 
 mock_sensor = MockFoubertSintNiklaasSensor(
-    config={"name": "Test Sensor"},
+    config={},
     company="Foubert Sint-Niklaas",
     user_lat=51.1658,
     user_lon=4.4251

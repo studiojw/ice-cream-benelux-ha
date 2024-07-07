@@ -142,6 +142,39 @@ class DeKremkerreMelleSensor(IceCreamVanSensor):
         return min(vans_with_distance, key=lambda x: x["distance"], default=None)
 
 
+class DeKrijmboerLommelSensor(IceCreamVanSensor):
+    """Sensor class for De Krijmboer Lommel."""
+
+    def get_vans(self):
+        """Get vans."""
+        return self._http.request_with_retry(
+            "https://api.icecorp.be/v1/icecreamvanmarkerdata?company_id=10&has_working_day=1"
+        )
+
+    def get_nearest_van(self) -> dict | None:
+        """Get nearest van."""
+        json_data = self.get_vans()
+        vans = json_data.get("data", [])
+        vans_with_distance = []
+        for van in vans:
+            lat = van.get("latitude")
+            lon = van.get("longitude")
+            if lat is None or lon is None:
+                continue
+            distance = haversine(lat, lon, self._user_lat, self._user_lon)
+            vans_with_distance.append(
+                {
+                    "company": self._company,
+                    "label": van.get("title", ""),
+                    "latitude": lat,
+                    "longitude": lon,
+                    "status": van.get("status", "").lower(),
+                    "distance": round(distance, 2),
+                }
+            )
+        return min(vans_with_distance, key=lambda x: x["distance"], default=None)
+
+
 class FoubertSintNiklaasSensor(IceCreamVanSensor):
     """Sensor class for Foubert Sint-Niklaas."""
 
@@ -204,6 +237,39 @@ class GlaceDeBockBeverenSensor(IceCreamVanSensor):
                     "latitude": lat,
                     "longitude": lon,
                     "status": van.get("status"),
+                    "distance": round(distance, 2),
+                }
+            )
+        return min(vans_with_distance, key=lambda x: x["distance"], default=None)
+
+
+class HetBoerenijsjeLoenhoutSensor(IceCreamVanSensor):
+    """Sensor class for Het Boerenijsje Loenhout."""
+
+    def get_vans(self):
+        """Get vans."""
+        return self._http.request_with_retry(
+            "https://api.icecorp.be/v1/icecreamvanmarkerdata?company_id=12&has_working_day=1"
+        )
+
+    def get_nearest_van(self) -> dict | None:
+        """Get nearest van."""
+        json_data = self.get_vans()
+        vans = json_data.get("data", [])
+        vans_with_distance = []
+        for van in vans:
+            lat = van.get("latitude")
+            lon = van.get("longitude")
+            if lat is None or lon is None:
+                continue
+            distance = haversine(lat, lon, self._user_lat, self._user_lon)
+            vans_with_distance.append(
+                {
+                    "company": self._company,
+                    "label": van.get("title", ""),
+                    "latitude": lat,
+                    "longitude": lon,
+                    "status": van.get("status", "").lower(),
                     "distance": round(distance, 2),
                 }
             )
@@ -371,6 +437,39 @@ class VanDeWalleTemseSensor(IceCreamVanSensor):
                     "latitude": lat,
                     "longitude": lon,
                     "status": van.get("status"),
+                    "distance": round(distance, 2),
+                }
+            )
+        return min(vans_with_distance, key=lambda x: x["distance"], default=None)
+
+
+class VanillaPlusOostendeSensor(IceCreamVanSensor):
+    """Sensor class for Vanilla Plus."""
+
+    def get_vans(self):
+        """Get vans."""
+        return self._http.request_with_retry(
+            "https://api.icecorp.be/v1/icecreamvanmarkerdata?company_id=11&has_working_day=1"
+        )
+
+    def get_nearest_van(self) -> dict | None:
+        """Get nearest van."""
+        json_data = self.get_vans()
+        vans = json_data.get("data", [])
+        vans_with_distance = []
+        for van in vans:
+            lat = van.get("latitude")
+            lon = van.get("longitude")
+            if lat is None or lon is None:
+                continue
+            distance = haversine(lat, lon, self._user_lat, self._user_lon)
+            vans_with_distance.append(
+                {
+                    "company": self._company,
+                    "label": van.get("title", ""),
+                    "latitude": lat,
+                    "longitude": lon,
+                    "status": van.get("status", "").lower(),
                     "distance": round(distance, 2),
                 }
             )

@@ -22,7 +22,7 @@ class GlaceDeBockBeverenSensor(GlaceDeBockBeverenSensor):
 
 
 mock_sensor = GlaceDeBockBeverenSensor(
-    config={"name": "Test Sensor"},
+    config={},
     company="Foubert Sint-Niklaas",
     user_lat=51.1658,
     user_lon=4.4251,
@@ -58,7 +58,7 @@ class GlaceDeBockBeverenSensor2(GlaceDeBockBeverenSensor):
 
 
 mock_sensor2 = GlaceDeBockBeverenSensor2(
-    config={"name": "Test Sensor"},
+    config={},
     company="Foubert Sint-Niklaas",
     user_lat=51.1658,
     user_lon=4.4251,

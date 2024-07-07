@@ -13,15 +13,18 @@ Whether you're in Belgium or the Netherlands, never miss your favorite ice cream
 
 ### Belgium 🇧🇪
 
-| Company       | City         |
-|---------------|--------------|
-| De Kremkerre  | Melle        |
-| Foubert       | Sint-Niklaas |
-| Glace De Bock | Beveren      |
-| Joris         | Beerse       |
-| Pitz          | Stekene      |
-| Tartiste      | Deinze       |
-| Van De Walle  | Temse        |
+| Company         | City         |
+|-----------------|--------------|
+| De Kremkerre    | Melle        |
+| De Krijmboer    | Lommel       |
+| Foubert         | Sint-Niklaas |
+| Glace De Bock   | Beveren      |
+| Het Boerenijsje | Loenhout     |
+| Joris           | Beerse       |
+| Pitz            | Stekene      |
+| Tartiste        | Deinze       |
+| Van De Walle    | Temse        |
+| Vanilla +       | Oostende     |
 
 ### Netherlands 🇳🇱
 

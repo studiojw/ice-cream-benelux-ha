@@ -27,7 +27,7 @@ class MockHetDroomijsjeBreskensSensor(HetDroomijsjeBreskensSensor):
         ]
 
 mock_sensor = MockHetDroomijsjeBreskensSensor(
-    config={"name": "Test Sensor"},
+    config={},
     company="Het Droomijsje Breskens",
     user_lat=51.380838,
     user_lon=3.4014555
@@ -46,7 +46,7 @@ class MockHetDroomijsjeBreskensSensor2(HetDroomijsjeBreskensSensor):
         return []
 
 mock_sensor = MockHetDroomijsjeBreskensSensor2(
-    config={"name": "Test Sensor"},
+    config={},
     company="Het Droom Ijsje Breskens",
     user_lat=51.380838,
     user_lon=3.4014555
