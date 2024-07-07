@@ -5,49 +5,39 @@ import logging
 import voluptuous as vol
 
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
-from homeassistant.const import CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-import homeassistant.helpers.config_validation as cv
 
-from .const import COMPANIES
+from .const import APP_NAME, CONF_APP_NAME, CONF_LATITUDE, CONF_LONGITUDE
 from .http_client import HTTPClient
 from .utils_location import haversine
 from .utils_string import snake_to_pascal_case
 
 _LOGGER = logging.getLogger(__name__)
 
-DEFAULT_NAME = "Ice Cream Benelux"
 
-PLATFORM_SCHEMA = cv.PLATFORM_SCHEMA.extend(
-    {
-        vol.Required(CONF_NAME, default=DEFAULT_NAME): cv.string,
-        vol.Required(CONF_LATITUDE): cv.latitude,
-        vol.Required(CONF_LONGITUDE): cv.longitude,
-        vol.Required("companies", default=[]): vol.All(
-            cv.ensure_list, [vol.In(COMPANIES.keys())]
-        ),
-    }
-)
-
-
-def setup_platform(
-    hass: HomeAssistant | None, config, add_entities, discovery_info=None
+async def async_setup_entry(
+    hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities
 ):
-    """Set up the sensor platform."""
-    lat = config.get(CONF_LATITUDE)
-    lon = config.get(CONF_LONGITUDE)
-    selected_companies = config.get("companies")
+    """Set up entry."""
+    app_config = {
+        CONF_APP_NAME: APP_NAME,
+    }
+    lat = config_entry.data.get(CONF_LATITUDE)
+    lon = config_entry.data.get(CONF_LONGITUDE)
+    companies = config_entry.data.get("companies")
 
     sensors = []
-    for company in selected_companies:
+    for company in companies:
         sensor_class_name = snake_to_pascal_case(company) + "Sensor"
         sensor_class = globals().get(sensor_class_name)
+        config = {**app_config, **config_entry.data}
         if sensor_class:
-            sensors.append(sensor_class(config, COMPANIES.get(company), lat, lon))
+            sensors.append(sensor_class(config, company, lat, lon))
         else:
             _LOGGER.error("No sensor class found for %s", company)
 
-    add_entities(sensors, True)
+    async_add_entities(sensors, True)
 
 
 class IceCreamVanSensor(SensorEntity):
@@ -55,7 +45,7 @@ class IceCreamVanSensor(SensorEntity):
 
     def __init__(self, config, company, user_lat, user_lon) -> None:
         """Initialize the sensor."""
-        self._name = f"{config.get(CONF_NAME)} {company}"
+        self._name = f"{config.get(CONF_APP_NAME)} {company}"
         self._company = company
         self._state = None
         self._user_lat = user_lat

@@ -1,0 +1,26 @@
+{
+    "title": "Ice Cream Benelux",
+    "config": {
+      "step": {
+        "user": {
+          "title": "Ice Cream Benelux",
+          "data": {
+            "latitude": "Latitude",
+            "longitude": "Longitude",
+            "companies": "Entreprises"
+          },
+          "data_description": {
+            "latitude": "La latitude de l'emplacement. Par ex. 52.12345",
+            "longitude": "La longitude de l'emplacement. Par ex. 4.12345",
+            "companies": "Les entreprises à surveiller. Vous pouvez en sélectionner plusieurs."
+          }
+        }
+      },
+      "error": {
+        "no_companies": "Veuillez sélectionner au moins une entreprise."
+      },
+      "abort": {
+        "already_configured": "La même configuration exacte est déjà configurée."
+      }
+    }
+  }

@@ -13,21 +13,21 @@ Whether you're in Belgium or the Netherlands, never miss your favorite ice cream
 
 ### Belgium 🇧🇪
 
-| Company       | City         | configuration.yaml    |
-|---------------|--------------|-------------------------|
-| De Kremkerre  | Melle        | `de_kremkerre_melle`    |
-| Foubert       | Sint-Niklaas | `foubert_sint_niklaas`  |
-| Glace De Bock | Beveren      | `glace_de_bock_beveren` |
-| Joris         | Beerse       | `joris_beerse`          |
-| Pitz          | Stekene      | `pitz_stekene`          |
-| Tartiste      | Deinze       | `tartiste_deinze`       |
-| Van De Walle  | Temse        | `van_de_walle_temse`    |
+| Company       | City         |
+|---------------|--------------|
+| De Kremkerre  | Melle        |
+| Foubert       | Sint-Niklaas |
+| Glace De Bock | Beveren      |
+| Joris         | Beerse       |
+| Pitz          | Stekene      |
+| Tartiste      | Deinze       |
+| Van De Walle  | Temse        |
 
 ### Netherlands 🇳🇱
 
-| Company        | City     | configuration.yaml      |
-|----------------|----------|---------------------------|
-| Het Droomijsje | Breskens | `het_droomijsje_breskens` |
+| Company        | City     |
+|----------------|----------|
+| Het Droomijsje | Breskens |
 
 ### Coming Soon
 
@@ -46,30 +46,34 @@ Whether you're in Belgium or the Netherlands, never miss your favorite ice cream
 
 ## Installation
 
+To install the integration to your Home Assistant, use this button:
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=studiojw&repository=ice-cream-benelux-ha&category=integration)
+
+### Manual Installation
+
 1. Go to HACS > Integrations
 2. Add this repo into your HACS [Custom Repositories](https://hacs.xyz/docs/faq/custom_repositories/)
 3. Search for "Ice Cream Benelux" and download the latest version of the integration.
 4. Restart Home Assistant
 5. Configure the integration, see [Configuration](README.md#configuration)
-6. Restart Home Assistant
 
 ## Configuration
 
-1. Add the sensor to your [configuration.yaml](https://www.home-assistant.io/docs/configuration/)
-2. Make sure to replace:
-   - `latitude` with the latitude of your location
-   - `longitude` with the longitude of your location
-   - `companies` with the companies you want to use (You can add more than one)
+Options for the integration can be set via the user interface, by
 
-```yaml
-sensor:
-  - platform: ice_cream_benelux
-    latitude: 51.12345
-    longitude: 4.12345
-    companies:
-      - company_1 # See list above (e.g. de_kremkerre_melle)
-      - company_2
-```
+1. Go to Settings -> [Devices & Services](https://my.home-assistant.io/redirect/integrations/).
+2. In the bottom right corner, click on [Add Integration](https://my.home-assistant.io/redirect/config_flow_start/?domain=ice_cream_benelux).
+3. From the list, select "Ice Cream Benelux".
+4. Follow the instructions on the screen to configure the integration.
+
+### Configuration Options
+
+| Option      | Description                                                             |
+|-------------|-------------------------------------------------------------------------|
+| `latitude`  | Latitude of the location to calculate the distance to the nearest van.  |
+| `longitude` | Longitude of the location to calculate the distance to the nearest van. |
+| `companies` | Ice cream companies to monitor (multiple allowed).                      |
 
 ## License
 

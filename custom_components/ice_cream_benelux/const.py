@@ -1,6 +1,12 @@
 """Constants for the Ice Cream Benelux integration."""
 
+APP_NAME = "Ice Cream Benelux"
 DOMAIN = "ice_cream_benelux"
+
+CONF_APP_NAME = "app_name"
+CONF_LATITUDE = "latitude"
+CONF_LONGITUDE = "longitude"
+CONF_COMPANIES = "companies"
 
 COMPANIES = {
     "de_kremkerre_melle": "De Kremkerre Melle",

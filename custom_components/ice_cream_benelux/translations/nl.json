@@ -1,0 +1,26 @@
+{
+    "title": "Ice Cream Benelux",
+    "config": {
+      "step": {
+        "user": {
+          "title": "Ice Cream Benelux",
+          "data": {
+            "latitude": "Breedtegraad",
+            "longitude": "Lengtegraad",
+            "companies": "Bedrijven"
+          },
+          "data_description": {
+            "latitude": "De breedtegraad van de locatie. Bijv. 52.12345",
+            "longitude": "De lengtegraad van de locatie. Bijv. 4.12345",
+            "companies": "De bedrijven die gemonitord moeten worden. U kunt meerdere selecteren."
+          }
+        }
+      },
+      "error": {
+        "no_companies": "Selecteer alstublieft minstens één bedrijf."
+      },
+      "abort": {
+        "already_configured": "Exact dezelfde configuratie is al geconfigureerd."
+      }
+    }
+  }
