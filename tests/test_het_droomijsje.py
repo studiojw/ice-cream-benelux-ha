@@ -2,7 +2,7 @@ import pytest
 from custom_components.ice_cream_benelux.sensor import HetDroomijsjeBreskensSensor
 
 class MockHetDroomijsjeBreskensSensor(HetDroomijsjeBreskensSensor):
-    def get_vans(self):
+    async def get_vans(self):
         return [
             {
                 "truck_ref": "di1",
@@ -33,8 +33,9 @@ mock_sensor = MockHetDroomijsjeBreskensSensor(
     user_lon=3.4014555
 )
 
-def test_get_nearest_van():
-    nearest_van = mock_sensor.get_nearest_van()
+@pytest.mark.asyncio
+async def test_get_nearest_van():
+    nearest_van = await mock_sensor.get_nearest_van()
     assert nearest_van is not None
     assert nearest_van["label"] == "Het Droomijsje Camping"
     assert nearest_van["latitude"] == 51.380838
@@ -42,7 +43,7 @@ def test_get_nearest_van():
     assert nearest_van["distance"] == 0
 
 class MockHetDroomijsjeBreskensSensor2(HetDroomijsjeBreskensSensor):
-    def get_vans(self):
+    async def get_vans(self):
         return []
 
 mock_sensor = MockHetDroomijsjeBreskensSensor2(
@@ -52,7 +53,8 @@ mock_sensor = MockHetDroomijsjeBreskensSensor2(
     user_lon=3.4014555
 )
 
-def test_get_nearest_van():
-    nearest_van = mock_sensor.get_nearest_van()
+@pytest.mark.asyncio
+async def test_get_nearest_van():
+    nearest_van = await mock_sensor.get_nearest_van()
     assert nearest_van is None
 

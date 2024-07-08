@@ -1,9 +1,12 @@
 """HTTP client for ice_cream_benelux."""
 
+import asyncio
 import logging
-import time
 
-import requests
+import aiohttp
+
+# Set the asyncio logger to WARNING to suppress INFO logs
+logging.getLogger("asyncio").setLevel(logging.WARNING)
 
 
 class HTTPClient:
@@ -13,7 +16,7 @@ class HTTPClient:
         """Initialize the HTTP client."""
         self._logger = logger
 
-    def request_with_retry(
+    async def request_with_retry(
         self,
         url: str,
         method: str = "GET",
@@ -23,7 +26,7 @@ class HTTPClient:
         retry_on_empty: bool = True,
         **kwargs,
     ) -> dict:
-        """Retry a request.
+        """Retry a request asynchronously.
 
         Parameters:
         ----------
@@ -40,7 +43,7 @@ class HTTPClient:
         retry_on_empty : bool, optional
             Whether to retry if response.text is empty (default is True).
         kwargs : dict
-            Additional arguments passed to requests.request.
+            Additional arguments passed to aiohttp.ClientSession.request.
 
         Returns:
         -------
@@ -51,45 +54,46 @@ class HTTPClient:
         if retry_statuses is None:
             retry_statuses = []
 
-        for attempt in range(retries):
-            try:
-                response = requests.request(method, url, timeout=5, **kwargs)
-                if response.status_code in retry_statuses or (
-                    retry_on_empty and not response.text
-                ):
-                    self._logger.debug(
-                        "%s Attempt %d/%d failed with status %d or empty response. Retrying in %d seconds",
+        async with aiohttp.ClientSession() as session:
+            for attempt in range(retries):
+                try:
+                    async with session.request(method, url, **kwargs) as response:
+                        if response.status in retry_statuses or (
+                            retry_on_empty and not await response.text()
+                        ):
+                            self._logger.debug(
+                                "%s Attempt %d/%d failed with status %d or empty response. Retrying in %d seconds",
+                                url,
+                                attempt + 1,
+                                retries,
+                                response.status,
+                                wait_time,
+                            )
+                            await asyncio.sleep(wait_time)
+                        else:
+                            response.raise_for_status()  # Ensure the request was successful
+                            return await response.json()
+
+                except aiohttp.ClientResponseError as http_err:
+                    self._logger.error(
+                        "%s HTTP error occurred: %s. Attempt %d/%d. Retrying in %d seconds",
                         url,
+                        str(http_err),
                         attempt + 1,
                         retries,
-                        response.status_code,
                         wait_time,
                     )
-                    time.sleep(wait_time)
-                else:
-                    response.raise_for_status()  # Ensure the request was successful
-                    return response.json()
+                    await asyncio.sleep(wait_time)
 
-            except requests.exceptions.HTTPError as http_err:
-                self._logger.error(
-                    "%s HTTP error occurred: %s. Attempt %d/%d. Retrying in %d seconds",
-                    url,
-                    str(http_err),
-                    attempt + 1,
-                    retries,
-                    wait_time,
-                )
-                time.sleep(wait_time)
-
-            except requests.exceptions.RequestException as req_err:
-                self._logger.error(
-                    "%s Error during request: %s. Attempt %d/%d. Retrying in %d seconds",
-                    url,
-                    str(req_err),
-                    attempt + 1,
-                    retries,
-                    wait_time,
-                )
-                time.sleep(wait_time)
+                except aiohttp.ClientError as req_err:
+                    self._logger.error(
+                        "%s Error during request: %s. Attempt %d/%d. Retrying in %d seconds",
+                        url,
+                        str(req_err),
+                        attempt + 1,
+                        retries,
+                        wait_time,
+                    )
+                    await asyncio.sleep(wait_time)
 
         return {}

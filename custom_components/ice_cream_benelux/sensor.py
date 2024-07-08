@@ -2,8 +2,6 @@
 
 import logging
 
-import voluptuous as vol
-
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -79,14 +77,14 @@ class IceCreamVanSensor(SensorEntity):
         """Return the unit of measurement."""
         return "km"
 
-    def update(self):
+    async def async_update(self):
         """Update sensor."""
-        self.set_van_state()
+        await self.set_van_state()
 
-    def set_van_state(self):
+    async def set_van_state(self):
         """Get nearest van and set state."""
         try:
-            van = self.get_nearest_van()
+            van = await self.get_nearest_van()
             if van is not None:
                 self._state = van["distance"]
                 self._attributes = van
@@ -101,7 +99,7 @@ class IceCreamVanSensor(SensorEntity):
         except Exception:  # pylint: disable=broad-except
             _LOGGER.exception("Unexpected error: %s", self.entity_id)
 
-    def get_nearest_van(self):
+    async def get_nearest_van(self):
         """Get the nearest van. To be implemented by subclasses."""
         raise NotImplementedError
 
@@ -109,13 +107,13 @@ class IceCreamVanSensor(SensorEntity):
 class DeKremkerreMelleSensor(IceCreamVanSensor):
     """Sensor class for De Kremkerre Melle."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry("https://ijsjesradar.be/status.php")
+        return await self._http.request_with_retry("https://ijsjesradar.be/status.php")
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        vans = self.get_vans()
+        vans = await self.get_vans()
         vans = [
             van
             for van in vans
@@ -145,15 +143,15 @@ class DeKremkerreMelleSensor(IceCreamVanSensor):
 class DeKrijmboerLommelSensor(IceCreamVanSensor):
     """Sensor class for De Krijmboer Lommel."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry(
+        return await self._http.request_with_retry(
             "https://api.icecorp.be/v1/icecreamvanmarkerdata?company_id=10&has_working_day=1"
         )
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        json_data = self.get_vans()
+        json_data = await self.get_vans()
         vans = json_data.get("data", [])
         vans_with_distance = []
         for van in vans:
@@ -178,15 +176,15 @@ class DeKrijmboerLommelSensor(IceCreamVanSensor):
 class FoubertSintNiklaasSensor(IceCreamVanSensor):
     """Sensor class for Foubert Sint-Niklaas."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry(
+        return await self._http.request_with_retry(
             "https://api.icecorp.be/v1/icecreamvanmarkerdata?company_id=2&has_working_day=1"
         )
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        json_data = self.get_vans()
+        json_data = await self.get_vans()
         vans = json_data.get("data", [])
         vans_with_distance = []
         for van in vans:
@@ -211,13 +209,13 @@ class FoubertSintNiklaasSensor(IceCreamVanSensor):
 class GlaceDeBockBeverenSensor(IceCreamVanSensor):
     """Sensor class for Glace De Bock Beveren."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry("https://ijsjesradar.be/status.php")
+        return await self._http.request_with_retry("https://ijsjesradar.be/status.php")
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        vans = self.get_vans()
+        vans = await self.get_vans()
         vans = [
             van
             for van in vans
@@ -246,15 +244,15 @@ class GlaceDeBockBeverenSensor(IceCreamVanSensor):
 class HetBoerenijsjeLoenhoutSensor(IceCreamVanSensor):
     """Sensor class for Het Boerenijsje Loenhout."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry(
+        return await self._http.request_with_retry(
             "https://api.icecorp.be/v1/icecreamvanmarkerdata?company_id=12&has_working_day=1"
         )
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        json_data = self.get_vans()
+        json_data = await self.get_vans()
         vans = json_data.get("data", [])
         vans_with_distance = []
         for van in vans:
@@ -279,13 +277,13 @@ class HetBoerenijsjeLoenhoutSensor(IceCreamVanSensor):
 class HetDroomijsjeBreskensSensor(IceCreamVanSensor):
     """Sensor class for Het Droomijsje Breskens."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry("https://ijsjesradar.be/status.php")
+        return await self._http.request_with_retry("https://ijsjesradar.be/status.php")
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        vans = self.get_vans()
+        vans = await self.get_vans()
         vans = [
             van
             for van in vans
@@ -315,15 +313,15 @@ class HetDroomijsjeBreskensSensor(IceCreamVanSensor):
 class JorisBeerseSensor(IceCreamVanSensor):
     """Sensor class for Joris Beerse."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry(
+        return await self._http.request_with_retry(
             "https://api.icecorp.be/v1/icecreamvanmarkerdata?company_id=4&has_working_day=1"
         )
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        json_data = self.get_vans()
+        json_data = await self.get_vans()
         vans = json_data.get("data", [])
         vans_with_distance = []
         for van in vans:
@@ -348,15 +346,15 @@ class JorisBeerseSensor(IceCreamVanSensor):
 class PitzStekeneSensor(IceCreamVanSensor):
     """Sensor class for Pitz Stekene."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry(
+        return await self._http.request_with_retry(
             "https://map-pitz-ijs.vercel.app/api/?purge=false"
         )
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        vans = self.get_vans()
+        vans = await self.get_vans()
         vans = [van for van in vans if van.get("active")]
         vans_with_distance = []
         for van in vans:
@@ -381,15 +379,15 @@ class PitzStekeneSensor(IceCreamVanSensor):
 class TartisteDeinzeSensor(IceCreamVanSensor):
     """Sensor class for Tartiste Deinze."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry(
+        return await self._http.request_with_retry(
             "https://api.icecorp.be/v1/icecreamvanmarkerdata?company_id=8&has_working_day=1"
         )
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        json_data = self.get_vans()
+        json_data = await self.get_vans()
         vans = json_data.get("data", [])
         vans_with_distance = []
         for van in vans:
@@ -414,15 +412,15 @@ class TartisteDeinzeSensor(IceCreamVanSensor):
 class VanDeWalleTemseSensor(IceCreamVanSensor):
     """Sensor class for Van De Walle Temse."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry(
+        return await self._http.request_with_retry(
             "https://www.ijsvandewalle.be/map/result.json"
         )
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        vans = self.get_vans()
+        vans = await self.get_vans()
         vans_with_distance = []
         for van in vans:
             lat = van.get("latitude")
@@ -446,15 +444,15 @@ class VanDeWalleTemseSensor(IceCreamVanSensor):
 class VanillaPlusOostendeSensor(IceCreamVanSensor):
     """Sensor class for Vanilla Plus."""
 
-    def get_vans(self):
+    async def get_vans(self):
         """Get vans."""
-        return self._http.request_with_retry(
+        return await self._http.request_with_retry(
             "https://api.icecorp.be/v1/icecreamvanmarkerdata?company_id=11&has_working_day=1"
         )
 
-    def get_nearest_van(self) -> dict | None:
+    async def get_nearest_van(self) -> dict | None:
         """Get nearest van."""
-        json_data = self.get_vans()
+        json_data = await self.get_vans()
         vans = json_data.get("data", [])
         vans_with_distance = []
         for van in vans:

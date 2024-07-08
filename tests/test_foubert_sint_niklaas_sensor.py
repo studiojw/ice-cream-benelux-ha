@@ -2,7 +2,7 @@ import pytest
 from custom_components.ice_cream_benelux.sensor import FoubertSintNiklaasSensor
 
 class MockFoubertSintNiklaasSensor(FoubertSintNiklaasSensor):
-    def get_vans(self):
+    async def get_vans(self):
         return {
             "data": [
                 {
@@ -25,8 +25,9 @@ mock_sensor = MockFoubertSintNiklaasSensor(
     user_lon=4.4251
 )
 
-def test_get_nearest_van():
-    nearest_van = mock_sensor.get_nearest_van()
+@pytest.mark.asyncio
+async def test_get_nearest_van():
+    nearest_van = await mock_sensor.get_nearest_van()
     assert nearest_van is not None
     assert nearest_van["label"] == "#5 Limoncello"
     assert nearest_van["latitude"] == 51.1658

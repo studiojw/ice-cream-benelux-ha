@@ -2,7 +2,7 @@ import pytest
 from custom_components.ice_cream_benelux.sensor import GlaceDeBockBeverenSensor
 
 class GlaceDeBockBeverenSensor(GlaceDeBockBeverenSensor):
-    def get_vans(self):
+    async def get_vans(self):
         return [
             {
                 "truck_ref": "db1",
@@ -29,8 +29,9 @@ mock_sensor = GlaceDeBockBeverenSensor(
 )
 
 
-def test_get_nearest_van_1():
-    nearest_van = mock_sensor.get_nearest_van()
+@pytest.mark.asyncio
+async def test_get_nearest_van_1():
+    nearest_van = await mock_sensor.get_nearest_van()
     assert nearest_van is not None
     assert nearest_van["label"] == "Glacé De Bock #1"
     assert nearest_van["latitude"] == 51.1784796
@@ -38,7 +39,7 @@ def test_get_nearest_van_1():
     assert nearest_van["distance"] == 14.72
 
 class GlaceDeBockBeverenSensor2(GlaceDeBockBeverenSensor):
-    def get_vans(self):
+    async def get_vans(self):
         return [
             {
                 "truck_ref": "db1",
@@ -65,6 +66,7 @@ mock_sensor2 = GlaceDeBockBeverenSensor2(
 )
 
 
-def test_get_nearest_van_all_vans_offline():
-    nearest_van = mock_sensor2.get_nearest_van()
+@pytest.mark.asyncio
+async def test_get_nearest_van_all_vans_offline():
+    nearest_van = await mock_sensor2.get_nearest_van()
     assert nearest_van is None
