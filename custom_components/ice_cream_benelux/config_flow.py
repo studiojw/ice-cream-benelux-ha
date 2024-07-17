@@ -36,12 +36,6 @@ def get_data_schema(home_lat, home_lon):
     )
 
 
-def validate_user_input(user_input, errors):
-    """Validate user input."""
-    if len(user_input[CONF_COMPANIES]) == 0:
-        errors["base"] = "no_companies"
-
-
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Config flow."""
 
