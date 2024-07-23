@@ -62,6 +62,11 @@ class IceCreamVanSensor(SensorEntity):
         return self._name
 
     @property
+    def unique_id(self):
+        """Return the unique id of the sensor."""
+        return f"{APP_NAME}_{self._company}_{self._user_lat}_{self._user_lon}"
+
+    @property
     def state(self):
         """Return the state of the sensor."""
         return self._state
